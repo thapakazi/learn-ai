@@ -1,0 +1,47 @@
+baseURL: "https://example.org/"
+languageCode: "en-us"
+title: "ML Engineering for DevOps/SRE Professionals"
+
+theme: hextra
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    noClasses: false
+
+menu:
+  main:
+    - name: Syllabus
+      pageRef: /docs
+      weight: 1
+    - name: Resources
+      pageRef: /resources
+      weight: 2
+    - name: Projects
+      pageRef: /projects
+      weight: 3
+    - name: GitHub
+      weight: 4
+      url: "https://github.com/yourusername/ml-engineering-syllabus"
+      params:
+        icon: github
+
+params:
+  description: "Comprehensive ML Engineering curriculum tailored for DevOps and SRE professionals"
+  
+  theme:
+    default: system
+    displayToggle: true
+    
+  navbar:
+    displayTitle: true
+    displayLogo: false
+    
+  footer:
+    displayPoweredBy: true
+    
+  editURL:
+    enable: true
+    base: "https://github.com/yourusername/ml-engineering-syllabus/edit/main"
