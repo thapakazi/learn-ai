@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>Module 3 - Infrastructure &amp; Deployment – ML Engineering for DevOps/SRE Professionals</title>
+  <meta name="description" content="Infrastructure &amp; Deployment ModuleLeverage your infrastructure expertise to build scalable, reliable ML systems.
+Learning Objectives Design ML-specific infrastructure patterns Implement containerized ML deployments Orchestrate ML workloads on Kubernetes Optimize model serving for production Week 9: Containerization for ML Docker for ML Applications Multi-stage Build Pattern # Build stage FROM python:3.9 AS builder WORKDIR /app COPY requirements.txt . RUN pip install --user -r requirements.txt # Runtime stage FROM python:3.9-slim WORKDIR /app COPY --from=builder /root/.local /root/.local COPY . . ENV PATH=/root/.local/bin:$PATH CMD [&#34;python&#34;, &#34;serve.py&#34;] GPU Support FROM nvidia/cuda:11.8.0-base-ubuntu22.04 # Install Python and ML frameworks RUN apt-get update &amp;&amp; apt-get install -y python3-pip RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu118 Container Optimization Layer caching strategies Size reduction techniques Security scanning Registry management Week 10: Kubernetes for ML ML Workload Patterns Training Jobs apiVersion: batch/v1 kind: Job metadata: name: model-training spec: template: spec: containers: - name: trainer image: ml-training:latest resources: requests: memory: &#34;8Gi&#34; cpu: &#34;4&#34; nvidia.com/gpu: &#34;1&#34; restartPolicy: OnFailure Model Serving apiVersion: apps/v1 kind: Deployment metadata: name: model-server spec: replicas: 3 template: spec: containers: - name: model image: model-serve:latest ports: - containerPort: 8080 livenessProbe: httpGet: path: /health port: 8080 readinessProbe: httpGet: path: /ready port: 8080 Kubeflow Components Pipelines for orchestration KFServing for model serving Katib for hyperparameter tuning Notebooks for development Week 11: Model Serving Architectures Serving Frameworks Comparison Framework Use Case Pros Cons TensorFlow Serving TF models High performance TF-specific TorchServe PyTorch models Easy deployment PyTorch only Triton Multi-framework GPU optimization Complex setup Seldon Core Any framework K8s native Overhead Implementation Examples FastAPI Model Server from fastapi import FastAPI import torch import numpy as np app = FastAPI() model = torch.load(&#34;model.pt&#34;) @app.post(&#34;/predict&#34;) async def predict(data: dict): input_tensor = torch.tensor(data[&#34;features&#34;]) with torch.no_grad(): prediction = model(input_tensor) return {&#34;prediction&#34;: prediction.tolist()} gRPC for Low Latency import grpc from concurrent import futures import model_pb2 import model_pb2_grpc class ModelService(model_pb2_grpc.ModelServicer): def Predict(self, request, context): features = np.array(request.features) prediction = self.model.predict(features) return model_pb2.PredictionResponse( predictions=prediction.tolist() ) Edge Deployment Model quantization ONNX conversion TensorFlow Lite Core ML for iOS Week 12: Infrastructure as Code Terraform for ML Infrastructure # GPU-enabled training cluster resource &#34;aws_eks_node_group&#34; &#34;gpu_nodes&#34; { cluster_name = aws_eks_cluster.ml_cluster.name node_group_name = &#34;gpu-nodes&#34; instance_types = [&#34;p3.2xlarge&#34;] scaling_config { desired_size = 2 max_size = 10 min_size = 1 } labels = { workload = &#34;ml-training&#34; gpu = &#34;true&#34; } } # Model storage resource &#34;aws_s3_bucket&#34; &#34;model_artifacts&#34; { bucket = &#34;ml-model-artifacts&#34; versioning { enabled = true } lifecycle_rule { enabled = true transition { days = 30 storage_class = &#34;STANDARD_IA&#34; } } } Cost Optimization Spot instances for training Auto-scaling policies Resource tagging Cost monitoring dashboards Hands-on Projects Project 1: Production ML Service Build a complete ML service with:" /><link rel="canonical" href="http://localhost:1313/docs/infrastructure/" itemprop="url" />
+
+<meta property="og:title" content="Module 3 - Infrastructure &amp; Deployment" />
+<meta property="og:description" content="Infrastructure &amp; Deployment ModuleLeverage your infrastructure expertise to build scalable, reliable ML systems.
+Learning Objectives
+    
+Design ML-specific infrastructure patterns
+Implement containerized ML deployments
+Orchestrate ML workloads on Kubernetes
+Optimize model serving for production
+
+Week 9: Containerization for ML
+    Docker for ML Applications
+    Multi-stage Build Pattern
+    
+
+# Build stage
+FROM python:3.9 AS builder
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --user -r requirements.txt
+
+# Runtime stage
+FROM python:3.9-slim
+WORKDIR /app
+COPY --from=builder /root/.local /root/.local
+COPY . .
+ENV PATH=/root/.local/bin:$PATH
+CMD [&#34;python&#34;, &#34;serve.py&#34;]
+  
+    
+    
+  
+
+
+GPU Support
+    
+
+FROM nvidia/cuda:11.8.0-base-ubuntu22.04
+# Install Python and ML frameworks
+RUN apt-get update &amp;&amp; apt-get install -y python3-pip
+RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+  
+    
+    
+  
+
+
+Container Optimization
+    
+Layer caching strategies
+Size reduction techniques
+Security scanning
+Registry management
+
+Week 10: Kubernetes for ML
+    ML Workload Patterns
+    Training Jobs
+    
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: model-training
+spec:
+  template:
+    spec:
+      containers:
+      - name: trainer
+        image: ml-training:latest
+        resources:
+          requests:
+            memory: &#34;8Gi&#34;
+            cpu: &#34;4&#34;
+            nvidia.com/gpu: &#34;1&#34;
+      restartPolicy: OnFailure
+  
+    
+    
+  
+
+
+Model Serving
+    
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-server
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+      - name: model
+        image: model-serve:latest
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+  
+    
+    
+  
+
+
+Kubeflow Components
+    
+Pipelines for orchestration
+KFServing for model serving
+Katib for hyperparameter tuning
+Notebooks for development
+
+Week 11: Model Serving Architectures
+    Serving Frameworks Comparison
+    
+  
+      
+          Framework
+          Use Case
+          Pros
+          Cons
+      
+  
+  
+      
+          TensorFlow Serving
+          TF models
+          High performance
+          TF-specific
+      
+      
+          TorchServe
+          PyTorch models
+          Easy deployment
+          PyTorch only
+      
+      
+          Triton
+          Multi-framework
+          GPU optimization
+          Complex setup
+      
+      
+          Seldon Core
+          Any framework
+          K8s native
+          Overhead
+      
+  
+
+Implementation Examples
+    FastAPI Model Server
+    
+
+from fastapi import FastAPI
+import torch
+import numpy as np
+
+app = FastAPI()
+model = torch.load(&#34;model.pt&#34;)
+
+@app.post(&#34;/predict&#34;)
+async def predict(data: dict):
+    input_tensor = torch.tensor(data[&#34;features&#34;])
+    with torch.no_grad():
+        prediction = model(input_tensor)
+    return {&#34;prediction&#34;: prediction.tolist()}
+  
+    
+    
+  
+
+
+gRPC for Low Latency
+    
+
+import grpc
+from concurrent import futures
+import model_pb2
+import model_pb2_grpc
+
+class ModelService(model_pb2_grpc.ModelServicer):
+    def Predict(self, request, context):
+        features = np.array(request.features)
+        prediction = self.model.predict(features)
+        return model_pb2.PredictionResponse(
+            predictions=prediction.tolist()
+        )
+  
+    
+    
+  
+
+
+Edge Deployment
+    
+Model quantization
+ONNX conversion
+TensorFlow Lite
+Core ML for iOS
+
+Week 12: Infrastructure as Code
+    Terraform for ML Infrastructure
+    
+
+# GPU-enabled training cluster
+resource &#34;aws_eks_node_group&#34; &#34;gpu_nodes&#34; {
+  cluster_name    = aws_eks_cluster.ml_cluster.name
+  node_group_name = &#34;gpu-nodes&#34;
+  
+  instance_types = [&#34;p3.2xlarge&#34;]
+  
+  scaling_config {
+    desired_size = 2
+    max_size     = 10
+    min_size     = 1
+  }
+  
+  labels = {
+    workload = &#34;ml-training&#34;
+    gpu      = &#34;true&#34;
+  }
+}
+
+# Model storage
+resource &#34;aws_s3_bucket&#34; &#34;model_artifacts&#34; {
+  bucket = &#34;ml-model-artifacts&#34;
+  
+  versioning {
+    enabled = true
+  }
+  
+  lifecycle_rule {
+    enabled = true
+    
+    transition {
+      days          = 30
+      storage_class = &#34;STANDARD_IA&#34;
+    }
+  }
+}
+  
+    
+    
+  
+
+
+Cost Optimization
+    
+Spot instances for training
+Auto-scaling policies
+Resource tagging
+Cost monitoring dashboards
+
+Hands-on Projects
+    Project 1: Production ML Service
+    Build a complete ML service with:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/docs/infrastructure/" /><meta property="article:section" content="docs" />
+
+
+
+  <meta itemprop="name" content="Module 3 - Infrastructure & Deployment">
+  <meta itemprop="description" content="Infrastructure &amp; Deployment ModuleLeverage your infrastructure expertise to build scalable, reliable ML systems.
+Learning Objectives Design ML-specific infrastructure patterns Implement containerized ML deployments Orchestrate ML workloads on Kubernetes Optimize model serving for production Week 9: Containerization for ML Docker for ML Applications Multi-stage Build Pattern # Build stage FROM python:3.9 AS builder WORKDIR /app COPY requirements.txt . RUN pip install --user -r requirements.txt # Runtime stage FROM python:3.9-slim WORKDIR /app COPY --from=builder /root/.local /root/.local COPY . . ENV PATH=/root/.local/bin:$PATH CMD [&#34;python&#34;, &#34;serve.py&#34;] GPU Support FROM nvidia/cuda:11.8.0-base-ubuntu22.04 # Install Python and ML frameworks RUN apt-get update &amp;&amp; apt-get install -y python3-pip RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu118 Container Optimization Layer caching strategies Size reduction techniques Security scanning Registry management Week 10: Kubernetes for ML ML Workload Patterns Training Jobs apiVersion: batch/v1 kind: Job metadata: name: model-training spec: template: spec: containers: - name: trainer image: ml-training:latest resources: requests: memory: &#34;8Gi&#34; cpu: &#34;4&#34; nvidia.com/gpu: &#34;1&#34; restartPolicy: OnFailure Model Serving apiVersion: apps/v1 kind: Deployment metadata: name: model-server spec: replicas: 3 template: spec: containers: - name: model image: model-serve:latest ports: - containerPort: 8080 livenessProbe: httpGet: path: /health port: 8080 readinessProbe: httpGet: path: /ready port: 8080 Kubeflow Components Pipelines for orchestration KFServing for model serving Katib for hyperparameter tuning Notebooks for development Week 11: Model Serving Architectures Serving Frameworks Comparison Framework Use Case Pros Cons TensorFlow Serving TF models High performance TF-specific TorchServe PyTorch models Easy deployment PyTorch only Triton Multi-framework GPU optimization Complex setup Seldon Core Any framework K8s native Overhead Implementation Examples FastAPI Model Server from fastapi import FastAPI import torch import numpy as np app = FastAPI() model = torch.load(&#34;model.pt&#34;) @app.post(&#34;/predict&#34;) async def predict(data: dict): input_tensor = torch.tensor(data[&#34;features&#34;]) with torch.no_grad(): prediction = model(input_tensor) return {&#34;prediction&#34;: prediction.tolist()} gRPC for Low Latency import grpc from concurrent import futures import model_pb2 import model_pb2_grpc class ModelService(model_pb2_grpc.ModelServicer): def Predict(self, request, context): features = np.array(request.features) prediction = self.model.predict(features) return model_pb2.PredictionResponse( predictions=prediction.tolist() ) Edge Deployment Model quantization ONNX conversion TensorFlow Lite Core ML for iOS Week 12: Infrastructure as Code Terraform for ML Infrastructure # GPU-enabled training cluster resource &#34;aws_eks_node_group&#34; &#34;gpu_nodes&#34; { cluster_name = aws_eks_cluster.ml_cluster.name node_group_name = &#34;gpu-nodes&#34; instance_types = [&#34;p3.2xlarge&#34;] scaling_config { desired_size = 2 max_size = 10 min_size = 1 } labels = { workload = &#34;ml-training&#34; gpu = &#34;true&#34; } } # Model storage resource &#34;aws_s3_bucket&#34; &#34;model_artifacts&#34; { bucket = &#34;ml-model-artifacts&#34; versioning { enabled = true } lifecycle_rule { enabled = true transition { days = 30 storage_class = &#34;STANDARD_IA&#34; } } } Cost Optimization Spot instances for training Auto-scaling policies Resource tagging Cost monitoring dashboards Hands-on Projects Project 1: Production ML Service Build a complete ML service with:">
+  <meta itemprop="wordCount" content="599">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Module 3 - Infrastructure & Deployment">
+  <meta name="twitter:description" content="Infrastructure &amp; Deployment ModuleLeverage your infrastructure expertise to build scalable, reliable ML systems.
+Learning Objectives Design ML-specific infrastructure patterns Implement containerized ML deployments Orchestrate ML workloads on Kubernetes Optimize model serving for production Week 9: Containerization for ML Docker for ML Applications Multi-stage Build Pattern # Build stage FROM python:3.9 AS builder WORKDIR /app COPY requirements.txt . RUN pip install --user -r requirements.txt # Runtime stage FROM python:3.9-slim WORKDIR /app COPY --from=builder /root/.local /root/.local COPY . . ENV PATH=/root/.local/bin:$PATH CMD [&#34;python&#34;, &#34;serve.py&#34;] GPU Support FROM nvidia/cuda:11.8.0-base-ubuntu22.04 # Install Python and ML frameworks RUN apt-get update &amp;&amp; apt-get install -y python3-pip RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu118 Container Optimization Layer caching strategies Size reduction techniques Security scanning Registry management Week 10: Kubernetes for ML ML Workload Patterns Training Jobs apiVersion: batch/v1 kind: Job metadata: name: model-training spec: template: spec: containers: - name: trainer image: ml-training:latest resources: requests: memory: &#34;8Gi&#34; cpu: &#34;4&#34; nvidia.com/gpu: &#34;1&#34; restartPolicy: OnFailure Model Serving apiVersion: apps/v1 kind: Deployment metadata: name: model-server spec: replicas: 3 template: spec: containers: - name: model image: model-serve:latest ports: - containerPort: 8080 livenessProbe: httpGet: path: /health port: 8080 readinessProbe: httpGet: path: /ready port: 8080 Kubeflow Components Pipelines for orchestration KFServing for model serving Katib for hyperparameter tuning Notebooks for development Week 11: Model Serving Architectures Serving Frameworks Comparison Framework Use Case Pros Cons TensorFlow Serving TF models High performance TF-specific TorchServe PyTorch models Easy deployment PyTorch only Triton Multi-framework GPU optimization Complex setup Seldon Core Any framework K8s native Overhead Implementation Examples FastAPI Model Server from fastapi import FastAPI import torch import numpy as np app = FastAPI() model = torch.load(&#34;model.pt&#34;) @app.post(&#34;/predict&#34;) async def predict(data: dict): input_tensor = torch.tensor(data[&#34;features&#34;]) with torch.no_grad(): prediction = model(input_tensor) return {&#34;prediction&#34;: prediction.tolist()} gRPC for Low Latency import grpc from concurrent import futures import model_pb2 import model_pb2_grpc class ModelService(model_pb2_grpc.ModelServicer): def Predict(self, request, context): features = np.array(request.features) prediction = self.model.predict(features) return model_pb2.PredictionResponse( predictions=prediction.tolist() ) Edge Deployment Model quantization ONNX conversion TensorFlow Lite Core ML for iOS Week 12: Infrastructure as Code Terraform for ML Infrastructure # GPU-enabled training cluster resource &#34;aws_eks_node_group&#34; &#34;gpu_nodes&#34; { cluster_name = aws_eks_cluster.ml_cluster.name node_group_name = &#34;gpu-nodes&#34; instance_types = [&#34;p3.2xlarge&#34;] scaling_config { desired_size = 2 max_size = 10 min_size = 1 } labels = { workload = &#34;ml-training&#34; gpu = &#34;true&#34; } } # Model storage resource &#34;aws_s3_bucket&#34; &#34;model_artifacts&#34; { bucket = &#34;ml-model-artifacts&#34; versioning { enabled = true } lifecycle_rule { enabled = true transition { days = 30 storage_class = &#34;STANDARD_IA&#34; } } } Cost Optimization Spot instances for training Auto-scaling policies Resource tagging Cost monitoring dashboards Hands-on Projects Project 1: Production ML Service Build a complete ML service with:">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+
+  
+
+  <script>
+     
+    const defaultTheme = 'system';
+
+    const setDarkTheme = () => {
+      document.documentElement.classList.add("dark");
+      document.documentElement.style.colorScheme = "dark";
+    }
+    const setLightTheme = () => {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.style.colorScheme = "light";
+    }
+
+    if ("color-theme" in localStorage) {
+      localStorage.getItem("color-theme") === "dark" ? setDarkTheme() : setLightTheme();
+    } else {
+      defaultTheme === "dark" ? setDarkTheme() : setLightTheme();
+      if (defaultTheme === "system") {
+        window.matchMedia("(prefers-color-scheme: dark)").matches ? setDarkTheme() : setLightTheme();
+      }
+    }
+  </script>
+
+  
+  </head>
+<body dir="ltr"><div class="nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-2 hx:h-16 hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none" title="ML Engineering for DevOps/SRE Professionals">ML Engineering for DevOps/SRE Professionals</span>
+</a>
+
+            <a
+              title="Syllabus"
+              href="/docs"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:font-medium"
+            >
+              <span class="hx:text-center">Syllabus</span>
+            </a>
+            <a
+              title="Resources"
+              href="/resources"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">Resources</span>
+            </a>
+            <a
+              title="Projects"
+              href="/projects"
+              
+              class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+            >
+              <span class="hx:text-center">Projects</span>
+            </a>
+          <a class="hx:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/yourusername/ml-engineering-syllabus" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a><button type="button" aria-label="Menu" class="hamburger-menu hx:cursor-pointer hx:-mr-2 hx:rounded-sm hx:p-2 hx:active:bg-gray-400/20 hx:md:hidden"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class='hx:mx-auto hx:flex hextra-max-page-width'>
+    <aside class="sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-16 hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:sticky">
+  
+  <div class="hx:px-4 hx:pt-4 hx:md:hidden">
+    <div class="search-wrapper hx:relative hx:md:w-64">
+  <div class="hx:relative hx:flex hx:items-center hx:text-gray-900 hx:contrast-more:text-gray-800 hx:dark:text-gray-300 hx:contrast-more:dark:text-gray-300">
+    <input
+      placeholder="Search..."
+      class="search-input hx:block hx:w-full hx:appearance-none hx:rounded-lg hx:px-3 hx:py-2 hx:transition-colors hx:text-base hx:leading-tight hx:md:text-sm hx:bg-black/[.05] hx:dark:bg-gray-50/10 hx:focus:bg-white hx:dark:focus:bg-dark hx:placeholder:text-gray-500 hx:dark:placeholder:text-gray-400 hx:contrast-more:border hx:contrast-more:border-current"
+      type="search"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx:absolute hx:my-1.5 hx:select-none hx:ltr:right-1.5 hx:rtl:left-1.5 hx:h-5 hx:rounded-sm hx:bg-white hx:px-1.5 hx:font-mono hx:text-[10px] hx:font-medium hx:text-gray-500 hx:border hx:border-gray-200 hx:dark:border-gray-100/20 hx:dark:bg-dark/50 hx:contrast-more:border-current hx:contrast-more:text-current hx:contrast-more:dark:border-current hx:items-center hx:gap-1 hx:transition-opacity hx:pointer-events-none hx:hidden hx:sm:flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="search-results hextra-scrollbar hx:hidden hx:border hx:border-gray-200 hx:bg-white hx:text-gray-100 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:absolute hx:top-full hx:z-20 hx:mt-2 hx:overflow-auto hx:overscroll-contain hx:rounded-xl hx:py-2.5 hx:shadow-xl hx:max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] hx:md:max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx:inset-x-0 hx:ltr:md:left-auto hx:rtl:md:right-auto hx:contrast-more:border hx:contrast-more:border-gray-900 hx:contrast-more:dark:border-gray-50 hx:w-screen hx:min-h-[100px] hx:max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+  </div>
+</div>
+
+  </div>
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      
+          <li class="open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/"
+    
+  >Complete Syllabus
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/fundamentals/"
+    
+  >Module 1 - Fundamentals
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/mlops/"
+    
+  >Module 2 - MLOps Core
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="/docs/infrastructure/"
+    
+  >Module 3 - Infrastructure &amp; Deployment
+    </a>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#learning-objectives"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Learning Objectives</a>
+            </li>
+          <li>
+              <a
+                href="#week-9-containerization-for-ml"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Week 9: Containerization for ML</a>
+            </li>
+          <li>
+              <a
+                href="#week-10-kubernetes-for-ml"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Week 10: Kubernetes for ML</a>
+            </li>
+          <li>
+              <a
+                href="#week-11-model-serving-architectures"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Week 11: Model Serving Architectures</a>
+            </li>
+          <li>
+              <a
+                href="#week-12-infrastructure-as-code"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Week 12: Infrastructure as Code</a>
+            </li>
+          <li>
+              <a
+                href="#hands-on-projects"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Hands-on Projects</a>
+            </li>
+          <li>
+              <a
+                href="#performance-optimization"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Performance Optimization</a>
+            </li>
+          <li>
+              <a
+                href="#assessment"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Assessment</a>
+            </li>
+          <li>
+              <a
+                href="#tools--resources"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Tools &amp; Resources</a>
+            </li>
+          <li>
+              <a
+                href="#next-steps"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Next Steps</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/setup/"
+    
+  >Development Environment Setup
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/resources/"
+    
+  >Resources
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/projects/"
+    
+  >Projects
+    </a></li>
+    </ul>
+
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
+        
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/fundamentals/"
+    
+  >Module 1 - Fundamentals
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/mlops/"
+    
+  >Module 2 - MLOps Core
+    </a></li>
+          <li class="open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="/docs/infrastructure/"
+    
+  >Module 3 - Infrastructure &amp; Deployment
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/docs/setup/"
+    
+  >Development Environment Setup
+    </a></li>
+        
+      </ul>
+    </div>
+  
+  
+    <div class="  hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:grow hx:flex-col"><button
+  title="Change theme"
+  data-theme="light"
+  class="theme-toggle hx:cursor-pointer hx:group hx:h-7 hx:rounded-md hx:px-2 hx:text-left hx:text-xs hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50"
+  type="button"
+  aria-label="Change theme"
+>
+  <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=light]:hidden">Light</span><svg height=12 class="hx:group-data-[theme=dark]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=dark]:hidden">Dark</span></div>
+</button>
+</div></div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents">
+    <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">On this page</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#learning-objectives">Learning Objectives
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#week-9-containerization-for-ml">Week 9: Containerization for ML
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#docker-for-ml-applications">Docker for ML Applications
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#multi-stage-build-pattern">Multi-stage Build Pattern
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#gpu-support">GPU Support
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#container-optimization">Container Optimization
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#week-10-kubernetes-for-ml">Week 10: Kubernetes for ML
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#ml-workload-patterns">ML Workload Patterns
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#training-jobs">Training Jobs
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#model-serving">Model Serving
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#kubeflow-components">Kubeflow Components
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#week-11-model-serving-architectures">Week 11: Model Serving Architectures
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#serving-frameworks-comparison">Serving Frameworks Comparison
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#implementation-examples">Implementation Examples
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#fastapi-model-server">FastAPI Model Server
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#grpc-for-low-latency">gRPC for Low Latency
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#edge-deployment">Edge Deployment
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#week-12-infrastructure-as-code">Week 12: Infrastructure as Code
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#terraform-for-ml-infrastructure">Terraform for ML Infrastructure
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#cost-optimization">Cost Optimization
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#hands-on-projects">Hands-on Projects
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#project-1-production-ml-service">Project 1: Production ML Service
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#project-2-multi-cloud-ml-platform">Project 2: Multi-Cloud ML Platform
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#performance-optimization">Performance Optimization
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#model-optimization-techniques">Model Optimization Techniques
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#infrastructure-optimization">Infrastructure Optimization
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#assessment">Assessment
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#practical-tasks">Practical Tasks
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#performance-metrics">Performance Metrics
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#tools--resources">Tools &amp; Resources
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#essential-tools">Essential Tools
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#learning-resources">Learning Resources
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#next-steps">Next Steps
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400"><a class="hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="https://github.com/yourusername/ml-engineering-syllabus/edit/main/docs/infrastructure.md" target="_blank" rel="noreferrer">Edit this page on GitHub →</a>
+        <button aria-hidden="true" id="backToTop" onClick="scrollUp();" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>Scroll to top</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main class="hx:w-full hx:min-w-0 hx:max-w-6xl hx:px-6 hx:pt-4 hx:md:px-12">
+        
+  <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
+        <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
+          <a href="/docs/">Complete Syllabus</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">Module 3 - Infrastructure &amp; Deployment</div>
+  </div>
+
+        <div class="content">
+          <h1>Module 3 - Infrastructure &amp; Deployment</h1>
+          <h1>Infrastructure &amp; Deployment Module</h1><p>Leverage your infrastructure expertise to build scalable, reliable ML systems.</p>
+<h2>Learning Objectives<span class="hx:absolute hx:-mt-20" id="learning-objectives"></span>
+    <a href="#learning-objectives" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
+<li>Design ML-specific infrastructure patterns</li>
+<li>Implement containerized ML deployments</li>
+<li>Orchestrate ML workloads on Kubernetes</li>
+<li>Optimize model serving for production</li>
+</ul>
+<h2>Week 9: Containerization for ML<span class="hx:absolute hx:-mt-20" id="week-9-containerization-for-ml"></span>
+    <a href="#week-9-containerization-for-ml" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Docker for ML Applications<span class="hx:absolute hx:-mt-20" id="docker-for-ml-applications"></span>
+    <a href="#docker-for-ml-applications" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><h4>Multi-stage Build Pattern<span class="hx:absolute hx:-mt-20" id="multi-stage-build-pattern"></span>
+    <a href="#multi-stage-build-pattern" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="c"># Build stage</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> python:3.9 AS builder</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /app</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> requirements.txt .<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> pip install --user -r requirements.txt<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Runtime stage</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">FROM</span><span class="s"> python:3.9-slim</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /app</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> --from<span class="o">=</span>builder /root/.local /root/.local<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> . .<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">PATH</span><span class="o">=</span>/root/.local/bin:<span class="nv">$PATH</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;python&#34;</span><span class="p">,</span> <span class="s2">&#34;serve.py&#34;</span><span class="p">]</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+    <div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>GPU Support<span class="hx:absolute hx:-mt-20" id="gpu-support"></span>
+    <a href="#gpu-support" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> nvidia/cuda:11.8.0-base-ubuntu22.04</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Install Python and ML frameworks</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> apt-get install -y python3-pip<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu118</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+    <div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>Container Optimization<span class="hx:absolute hx:-mt-20" id="container-optimization"></span>
+    <a href="#container-optimization" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li>Layer caching strategies</li>
+<li>Size reduction techniques</li>
+<li>Security scanning</li>
+<li>Registry management</li>
+</ul>
+<h2>Week 10: Kubernetes for ML<span class="hx:absolute hx:-mt-20" id="week-10-kubernetes-for-ml"></span>
+    <a href="#week-10-kubernetes-for-ml" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>ML Workload Patterns<span class="hx:absolute hx:-mt-20" id="ml-workload-patterns"></span>
+    <a href="#ml-workload-patterns" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><h4>Training Jobs<span class="hx:absolute hx:-mt-20" id="training-jobs"></span>
+    <a href="#training-jobs" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">batch/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Job</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">model-training</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">trainer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">ml-training:latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;8Gi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;4&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">OnFailure</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+    <div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h4>Model Serving<span class="hx:absolute hx:-mt-20" id="model-serving"></span>
+    <a href="#model-serving" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">model-server</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">model</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">model-serve:latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">8080</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">livenessProbe</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">httpGet</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/health</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">8080</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">readinessProbe</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">httpGet</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/ready</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">8080</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+    <div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>Kubeflow Components<span class="hx:absolute hx:-mt-20" id="kubeflow-components"></span>
+    <a href="#kubeflow-components" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li>Pipelines for orchestration</li>
+<li>KFServing for model serving</li>
+<li>Katib for hyperparameter tuning</li>
+<li>Notebooks for development</li>
+</ul>
+<h2>Week 11: Model Serving Architectures<span class="hx:absolute hx:-mt-20" id="week-11-model-serving-architectures"></span>
+    <a href="#week-11-model-serving-architectures" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Serving Frameworks Comparison<span class="hx:absolute hx:-mt-20" id="serving-frameworks-comparison"></span>
+    <a href="#serving-frameworks-comparison" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><table>
+  <thead>
+      <tr>
+          <th>Framework</th>
+          <th>Use Case</th>
+          <th>Pros</th>
+          <th>Cons</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>TensorFlow Serving</td>
+          <td>TF models</td>
+          <td>High performance</td>
+          <td>TF-specific</td>
+      </tr>
+      <tr>
+          <td>TorchServe</td>
+          <td>PyTorch models</td>
+          <td>Easy deployment</td>
+          <td>PyTorch only</td>
+      </tr>
+      <tr>
+          <td>Triton</td>
+          <td>Multi-framework</td>
+          <td>GPU optimization</td>
+          <td>Complex setup</td>
+      </tr>
+      <tr>
+          <td>Seldon Core</td>
+          <td>Any framework</td>
+          <td>K8s native</td>
+          <td>Overhead</td>
+      </tr>
+  </tbody>
+</table>
+<h3>Implementation Examples<span class="hx:absolute hx:-mt-20" id="implementation-examples"></span>
+    <a href="#implementation-examples" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><h4>FastAPI Model Server<span class="hx:absolute hx:-mt-20" id="fastapi-model-server"></span>
+    <a href="#fastapi-model-server" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">torch</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;model.pt&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.post</span><span class="p">(</span><span class="s2">&#34;/predict&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">input_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&#34;features&#34;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">        <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span><span class="s2">&#34;prediction&#34;</span><span class="p">:</span> <span class="n">prediction</span><span class="o">.</span><span class="n">tolist</span><span class="p">()}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+    <div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h4>gRPC for Low Latency<span class="hx:absolute hx:-mt-20" id="grpc-for-low-latency"></span>
+    <a href="#grpc-for-low-latency" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">grpc</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">concurrent</span> <span class="kn">import</span> <span class="n">futures</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">model_pb2</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">model_pb2_grpc</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">ModelService</span><span class="p">(</span><span class="n">model_pb2_grpc</span><span class="o">.</span><span class="n">ModelServicer</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">Predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">prediction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">model_pb2</span><span class="o">.</span><span class="n">PredictionResponse</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">predictions</span><span class="o">=</span><span class="n">prediction</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+    <div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>Edge Deployment<span class="hx:absolute hx:-mt-20" id="edge-deployment"></span>
+    <a href="#edge-deployment" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li>Model quantization</li>
+<li>ONNX conversion</li>
+<li>TensorFlow Lite</li>
+<li>Core ML for iOS</li>
+</ul>
+<h2>Week 12: Infrastructure as Code<span class="hx:absolute hx:-mt-20" id="week-12-infrastructure-as-code"></span>
+    <a href="#week-12-infrastructure-as-code" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Terraform for ML Infrastructure<span class="hx:absolute hx:-mt-20" id="terraform-for-ml-infrastructure"></span>
+    <a href="#terraform-for-ml-infrastructure" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-hcl" data-lang="hcl"><span class="line"><span class="cl"><span class="c1"># GPU-enabled training cluster
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_eks_node_group&#34; &#34;gpu_nodes&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  cluster_name</span>    <span class="o">=</span> <span class="k">aws_eks_cluster</span><span class="p">.</span><span class="k">ml_cluster</span><span class="p">.</span><span class="k">name</span>
+</span></span><span class="line"><span class="cl"><span class="n">  node_group_name</span> <span class="o">=</span> <span class="s2">&#34;gpu-nodes&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">instance_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;p3.2xlarge&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">scaling_config</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    desired_size</span> <span class="o">=</span> <span class="m">2</span>
+</span></span><span class="line"><span class="cl"><span class="n">    max_size</span>     <span class="o">=</span> <span class="m">10</span>
+</span></span><span class="line"><span class="cl"><span class="n">    min_size</span>     <span class="o">=</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="n">labels</span> <span class="o">=</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    workload</span> <span class="o">=</span> <span class="s2">&#34;ml-training&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">    gpu</span>      <span class="o">=</span> <span class="s2">&#34;true&#34;</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}<span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1">
+</span></span></span><span class="line"><span class="cl"><span class="c1"># Model storage
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">resource</span> <span class="s2">&#34;aws_s3_bucket&#34; &#34;model_artifacts&#34;</span> {
+</span></span><span class="line"><span class="cl"><span class="n">  bucket</span> <span class="o">=</span> <span class="s2">&#34;ml-model-artifacts&#34;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">versioning</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    enabled</span> <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">lifecycle_rule</span> {
+</span></span><span class="line"><span class="cl"><span class="n">    enabled</span> <span class="o">=</span> <span class="kt">true</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">transition</span> {
+</span></span><span class="line"><span class="cl"><span class="n">      days</span>          <span class="o">=</span> <span class="m">30</span>
+</span></span><span class="line"><span class="cl"><span class="n">      storage_class</span> <span class="o">=</span> <span class="s2">&#34;STANDARD_IA&#34;</span>
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Copy code"
+  >
+    <div class="copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+    <div class="success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>Cost Optimization<span class="hx:absolute hx:-mt-20" id="cost-optimization"></span>
+    <a href="#cost-optimization" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li>Spot instances for training</li>
+<li>Auto-scaling policies</li>
+<li>Resource tagging</li>
+<li>Cost monitoring dashboards</li>
+</ul>
+<h2>Hands-on Projects<span class="hx:absolute hx:-mt-20" id="hands-on-projects"></span>
+    <a href="#hands-on-projects" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Project 1: Production ML Service<span class="hx:absolute hx:-mt-20" id="project-1-production-ml-service"></span>
+    <a href="#project-1-production-ml-service" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Build a complete ML service with:</p>
+<ul>
+<li>Containerized model server</li>
+<li>Kubernetes deployment</li>
+<li>Auto-scaling based on metrics</li>
+<li>Blue-green deployment</li>
+<li>Monitoring and logging</li>
+</ul>
+<h3>Project 2: Multi-Cloud ML Platform<span class="hx:absolute hx:-mt-20" id="project-2-multi-cloud-ml-platform"></span>
+    <a href="#project-2-multi-cloud-ml-platform" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Design infrastructure supporting:</p>
+<ul>
+<li>Training on AWS/GCP</li>
+<li>Model registry on S3</li>
+<li>Serving on edge devices</li>
+<li>Cost optimization</li>
+</ul>
+<h2>Performance Optimization<span class="hx:absolute hx:-mt-20" id="performance-optimization"></span>
+    <a href="#performance-optimization" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Model Optimization Techniques<span class="hx:absolute hx:-mt-20" id="model-optimization-techniques"></span>
+    <a href="#model-optimization-techniques" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li>Quantization (INT8, FP16)</li>
+<li>Pruning unused weights</li>
+<li>Knowledge distillation</li>
+<li>Batch inference</li>
+</ul>
+<h3>Infrastructure Optimization<span class="hx:absolute hx:-mt-20" id="infrastructure-optimization"></span>
+    <a href="#infrastructure-optimization" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li>GPU utilization monitoring</li>
+<li>Memory optimization</li>
+<li>Network bandwidth management</li>
+<li>Caching strategies</li>
+</ul>
+<h2>Assessment<span class="hx:absolute hx:-mt-20" id="assessment"></span>
+    <a href="#assessment" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Practical Tasks<span class="hx:absolute hx:-mt-20" id="practical-tasks"></span>
+    <a href="#practical-tasks" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><input disabled="" type="checkbox"> Containerize an ML application with GPU support</li>
+<li><input disabled="" type="checkbox"> Deploy model on Kubernetes with auto-scaling</li>
+<li><input disabled="" type="checkbox"> Implement A/B testing for models</li>
+<li><input disabled="" type="checkbox"> Create IaC for ML infrastructure</li>
+<li><input disabled="" type="checkbox"> Optimize model serving latency</li>
+</ul>
+<h3>Performance Metrics<span class="hx:absolute hx:-mt-20" id="performance-metrics"></span>
+    <a href="#performance-metrics" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li>Model serving latency &lt; 100ms</li>
+<li>99.9% availability SLA</li>
+<li>Cost per inference &lt; $0.001</li>
+<li>GPU utilization &gt; 80%</li>
+</ul>
+<h2>Tools &amp; Resources<span class="hx:absolute hx:-mt-20" id="tools--resources"></span>
+    <a href="#tools--resources" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Essential Tools<span class="hx:absolute hx:-mt-20" id="essential-tools"></span>
+    <a href="#essential-tools" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>Containers</strong>: Docker, Podman</li>
+<li><strong>Orchestration</strong>: Kubernetes, EKS, GKE</li>
+<li><strong>IaC</strong>: Terraform, Pulumi</li>
+<li><strong>Serving</strong>: TF Serving, TorchServe, Triton</li>
+<li><strong>Monitoring</strong>: Prometheus, Grafana</li>
+</ul>
+<h3>Learning Resources<span class="hx:absolute hx:-mt-20" id="learning-resources"></span>
+    <a href="#learning-resources" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><a href="https://kubernetes.io/blog" target="_blank" rel="noopener">Kubernetes Patterns for ML</a></li>
+<li><a href="https://docs.nvidia.com/deeplearning/triton-inference-server" target="_blank" rel="noopener">NVIDIA Triton Documentation</a></li>
+<li><a href="https://ml-ops.org" target="_blank" rel="noopener">ML Infrastructure Best Practices</a></li>
+</ul>
+<h2>Next Steps<span class="hx:absolute hx:-mt-20" id="next-steps"></span>
+    <a href="#next-steps" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Proceed to <a href="/docs/data-engineering" >Module 4: Data Engineering</a> to master data pipeline design and feature engineering for ML systems.</p>
+
+        </div>
+        <div class="hx:mt-16"></div>
+        <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
+        href="/docs/mlops/"
+        title="Module 2 - MLOps Core"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>Module 2 - MLOps Core</a><a
+        href="/docs/setup/"
+        title="Development Environment Setup"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
+      >Development Environment Setup<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hextra-custom-footer hextra-max-footer-width hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>Powered by Hextra<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div></div>
+    </div></footer>
+    
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script>
+        <script defer src="/en.search.js" integrity=""></script>
+  </body>
+</html>

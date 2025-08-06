@@ -19,15 +19,9 @@ This syllabus builds upon these foundations to help you master ML-specific chall
 ## Learning Path
 
 {{< cards >}}
-  {{< card link="/docs/fundamentals" title="Module 1: Fundamentals" icon="book-open" >}}
-    Core ML concepts and Python essentials for ML engineering
-  {{< /card >}}
-  {{< card link="/docs/mlops" title="Module 2: MLOps" icon="cog" >}}
-    Operationalizing ML with DevOps principles
-  {{< /card >}}
-  {{< card link="/docs/infrastructure" title="Module 3: Infrastructure" icon="server" >}}
-    ML-specific infrastructure and deployment patterns
-  {{< /card >}}
+  {{< card link="/docs/fundamentals" title="Module 1: Fundamentals" icon="book-open" subtitle="Core ML concepts and Python essentials for ML engineering" >}}
+  {{< card link="/docs/mlops" title="Module 2: MLOps" icon="cog" subtitle="Operationalizing ML with DevOps principles" >}}
+  {{< card link="/docs/infrastructure" title="Module 3: Infrastructure" icon="server" subtitle="ML-specific infrastructure and deployment patterns" >}}
 {{< /cards >}}
 
 ## Prerequisites
