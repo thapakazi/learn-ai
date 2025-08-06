@@ -128,6 +128,7 @@ Build an ML pipeline that:
 - [Andrew Ng's Machine Learning Course](https://www.coursera.org/learn/machine-learning)
 - [Deep Learning Specialization](https://www.coursera.org/specializations/deep-learning)
 - [MIT 6.034 Artificial Intelligence](https://ocw.mit.edu/courses/6-034-artificial-intelligence-fall-2010/)
+- [MIT 6.S191 Introduction to Deep Learning](https://www.youtube.com/playlist?list=PLtBw6njQRU-rwp5__7C0oIVt26ZgjG9NI) (Alexander Amini)
 
 ### Tools Setup
 ```bash
