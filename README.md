@@ -102,7 +102,12 @@ The curriculum includes practical projects that mirror real-world scenarios:
 
 ## License
 
-This curriculum is licensed under MIT License. See [LICENSE](LICENSE) for details.
+This AI-assisted educational resource is dedicated to the **public domain**.
+
+- Created with AI assistance (Claude by Anthropic)
+- Released under multiple public domain dedications for maximum freedom
+- Use it however you want - no permission or attribution needed
+- See [LICENSE](LICENSE) for details
 
 ## Acknowledgments
 
