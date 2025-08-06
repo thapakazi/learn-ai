@@ -122,9 +122,12 @@ Build an ML pipeline that:
 - "The Elements of Statistical Learning" (Selected sections)
 
 ### Online Materials
-- Fast.ai Practical Deep Learning (Lessons 1-3)
-- 3Blue1Brown Neural Network series
-- Google's Machine Learning Crash Course
+- [Fast.ai Practical Deep Learning](https://course.fast.ai/) (Lessons 1-3)
+- [3Blue1Brown Neural Network series](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi)
+- [Google's Machine Learning Crash Course](https://developers.google.com/machine-learning/crash-course)
+- [Andrew Ng's Machine Learning Course](https://www.coursera.org/learn/machine-learning)
+- [Deep Learning Specialization](https://www.coursera.org/specializations/deep-learning)
+- [MIT 6.034 Artificial Intelligence](https://ocw.mit.edu/courses/6-034-artificial-intelligence-fall-2010/)
 
 ### Tools Setup
 ```bash
