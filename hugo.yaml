@@ -1,4 +1,4 @@
-baseURL: "https://example.org/"
+baseURL: "https://learn-ai.thapakazi.com/"
 languageCode: "en-us"
 title: "ML Engineering for DevOps/SRE Professionals"
 
@@ -24,7 +24,7 @@ menu:
       weight: 3
     - name: GitHub
       weight: 4
-      url: "https://github.com/yourusername/ml-engineering-syllabus"
+      url: "https://github.com/thapakzi/learn-ai/edit/main"
       params:
         icon: github
 
@@ -44,4 +44,4 @@ params:
     
   editURL:
     enable: true
-    base: "https://github.com/yourusername/ml-engineering-syllabus/edit/main"
+    base: "https://github.com/thapakzi/learn-ai/edit/main"
