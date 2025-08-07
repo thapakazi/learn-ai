@@ -7,11 +7,11 @@ weight: 1
 
 ## Module 1: Foundations (Weeks 1-4)
 
-### Week 1: Python for ML Engineering
-- Python essentials and advanced features
-- NumPy and Pandas for data manipulation
-- Virtual environments and dependency management
-- Jupyter notebooks vs production code
+### [Week 1: Python for ML Engineering](/docs/fundamentals/week1/)
+- [Python Basics for DevOps/SRE](/docs/fundamentals/week1/python-basics/)
+- [NumPy for Infrastructure Metrics](/docs/fundamentals/week1/numpy-arrays/)
+- [Pandas for Log Analysis](/docs/fundamentals/week1/pandas-dataframes/)
+- [Matplotlib for Monitoring Dashboards](/docs/fundamentals/week1/matplotlib-visualization/)
 
 ### Week 2: Mathematics & Statistics Refresher
 - Linear algebra essentials

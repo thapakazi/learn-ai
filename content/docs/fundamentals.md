@@ -15,13 +15,13 @@ By the end of this module, you will:
 - Grasp fundamental ML algorithms and their applications
 - Get hands-on experience with deep learning frameworks
 
-## Week 1: Python for ML Engineering
+## [Week 1: Python for ML Engineering](/docs/fundamentals/week1/)
 
 ### Topics Covered
-- Python advanced features (decorators, generators, context managers)
-- NumPy for numerical computing
-- Pandas for data manipulation
-- Transitioning from scripts to production code
+- [Python Basics for DevOps/SRE](/docs/fundamentals/week1/python-basics/) - Core Python with infrastructure automation examples
+- [NumPy for Infrastructure Metrics](/docs/fundamentals/week1/numpy-arrays/) - Efficient numerical operations for metrics analysis
+- [Pandas for Log Analysis](/docs/fundamentals/week1/pandas-dataframes/) - Data manipulation and log processing
+- [Matplotlib for Monitoring Dashboards](/docs/fundamentals/week1/matplotlib-visualization/) - Creating professional visualizations
 
 ### Hands-on Labs
 1. Build a data processing pipeline using Python
@@ -33,6 +33,8 @@ Your experience with scripting and automation will accelerate Python mastery. Fo
 - Writing testable, maintainable code
 - Creating robust error handling
 - Implementing logging and monitoring hooks
+
+📚 **[Start Week 1 Learning →](/docs/fundamentals/week1/)**
 
 ## Week 2: Mathematics & Statistics
 
