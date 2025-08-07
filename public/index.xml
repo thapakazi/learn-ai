@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ML Engineering for DevOps/SRE Professionals – ML Engineering for DevOps/SRE Professionals</title>
-    <link>http://localhost:1313/</link>
+    <link>http://localhost:1313/learn-ai/</link>
     <description>Recent content on ML Engineering for DevOps/SRE Professionals</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	  <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="http://localhost:1313/learn-ai/index.xml" rel="self" type="application/rss+xml" />
     
     
       

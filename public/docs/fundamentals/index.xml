@@ -1,0 +1,199 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ML Engineering for DevOps/SRE Professionals – Module 1: Fundamentals</title>
+    <link>http://localhost:1313/learn-ai/docs/fundamentals/</link>
+    <description>Recent content in Module 1: Fundamentals on ML Engineering for DevOps/SRE Professionals</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	  <atom:link href="http://localhost:1313/learn-ai/docs/fundamentals/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Week 1: Python Fundamentals</title>
+      <link>http://localhost:1313/learn-ai/docs/fundamentals/week1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/learn-ai/docs/fundamentals/week1/</guid>
+      <description>
+        
+        
+        &lt;h2&gt;Overview&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;overview&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#overview&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;This week covers the essential Python foundations needed for machine learning in DevOps and SRE contexts. Each topic is presented with real-world infrastructure and operations examples to make the concepts immediately applicable to your daily work.&lt;/p&gt;
+&lt;h2&gt;Learning Objectives&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;learning-objectives&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#learning-objectives&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;By the end of this week, you will be able to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Write Python scripts for infrastructure automation and monitoring&lt;/li&gt;
+&lt;li&gt;Process and analyze large-scale metrics data efficiently with NumPy&lt;/li&gt;
+&lt;li&gt;Perform log analysis and create reports using Pandas&lt;/li&gt;
+&lt;li&gt;Create professional monitoring dashboards and visualizations with Matplotlib&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Topics Covered&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;topics-covered&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#topics-covered&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose&#34; style=&#34;--hextra-cards-grid-cols: 3;&#34;&gt;
+  &lt;a
+    class=&#34;hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900&#34;href=&#34;python-basics&#34;
+      &gt;&lt;span class=&#34;hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4&#34;/&gt;&lt;/svg&gt;Python Basics&lt;/span&gt;&lt;div class=&#34;hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2&#34;&gt;Core Python concepts with DevOps applications&lt;/div&gt;&lt;/a&gt;
+  &lt;a
+    class=&#34;hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900&#34;href=&#34;numpy-arrays&#34;
+      &gt;&lt;span class=&#34;hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z&#34;/&gt;&lt;/svg&gt;NumPy Arrays&lt;/span&gt;&lt;div class=&#34;hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2&#34;&gt;Efficient numerical operations for infrastructure metrics&lt;/div&gt;&lt;/a&gt;
+  &lt;a
+    class=&#34;hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900&#34;href=&#34;pandas-dataframes&#34;
+      &gt;&lt;span class=&#34;hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z&#34;/&gt;&lt;/svg&gt;Pandas DataFrames&lt;/span&gt;&lt;div class=&#34;hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2&#34;&gt;Log analysis and structured data management&lt;/div&gt;&lt;/a&gt;
+  &lt;a
+    class=&#34;hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900&#34;href=&#34;matplotlib-visualization&#34;
+      &gt;&lt;span class=&#34;hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50&#34;&gt;&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; fill=&#34;none&#34; viewBox=&#34;0 0 24 24&#34; stroke-width=&#34;2&#34; stroke=&#34;currentColor&#34; aria-hidden=&#34;true&#34;&gt;&lt;path stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34; d=&#34;M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z&#34;/&gt;&lt;/svg&gt;Matplotlib Visualization&lt;/span&gt;&lt;div class=&#34;hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2&#34;&gt;Creating monitoring dashboards and reports&lt;/div&gt;&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;h2&gt;Prerequisites&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;prerequisites&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#prerequisites&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Basic command line familiarity&lt;/li&gt;
+&lt;li&gt;Understanding of basic DevOps concepts&lt;/li&gt;
+&lt;li&gt;Python 3.8+ installed&lt;/li&gt;
+&lt;li&gt;Access to a development environment&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Setup Instructions&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;setup-instructions&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#setup-instructions&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class=&#34;hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code&#34;&gt;
+
+&lt;div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Create a virtual environment&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python3 -m venv ml-devops-env
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;source&lt;/span&gt; ml-devops-env/bin/activate  &lt;span class=&#34;c1&#34;&gt;# On Windows: ml-devops-env\Scripts\activate&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Install required packages&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pip install numpy pandas matplotlib requests psutil pyyaml
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Verify installation&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;python -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;import numpy, pandas, matplotlib; print(&amp;#39;All packages installed successfully!&amp;#39;)&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&#34;hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0&#34;&gt;
+  &lt;button
+    class=&#34;hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50&#34;
+    title=&#34;Copy code&#34;
+  &gt;
+    &lt;div class=&#34;copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+    &lt;div class=&#34;success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4&#34;&gt;&lt;/div&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;Learning Path&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;learning-path&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#learning-path&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Day 1-2: Python Basics&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;day-1-2-python-basics&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#day-1-2-python-basics&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Review Python fundamentals&lt;/li&gt;
+&lt;li&gt;Complete automation exercises&lt;/li&gt;
+&lt;li&gt;Build your first monitoring script&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Day 3: NumPy&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;day-3-numpy&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#day-3-numpy&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Learn array operations&lt;/li&gt;
+&lt;li&gt;Practice with metrics data&lt;/li&gt;
+&lt;li&gt;Implement anomaly detection&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Day 4: Pandas&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;day-4-pandas&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#day-4-pandas&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Master DataFrame operations&lt;/li&gt;
+&lt;li&gt;Analyze sample log files&lt;/li&gt;
+&lt;li&gt;Create incident reports&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Day 5: Matplotlib&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;day-5-matplotlib&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#day-5-matplotlib&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Learn visualization basics&lt;/li&gt;
+&lt;li&gt;Build monitoring dashboards&lt;/li&gt;
+&lt;li&gt;Create professional reports&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Day 6-7: Integration Project&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;day-6-7-integration-project&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#day-6-7-integration-project&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Combine all skills&lt;/li&gt;
+&lt;li&gt;Build a complete monitoring solution&lt;/li&gt;
+&lt;li&gt;Document and test your code&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Hands-On Projects&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;hands-on-projects&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#hands-on-projects&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Project 1: Automated Health Check System&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;project-1-automated-health-check-system&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#project-1-automated-health-check-system&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Build a complete health check system that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Monitors multiple services (Python basics)&lt;/li&gt;
+&lt;li&gt;Collects and processes metrics (NumPy)&lt;/li&gt;
+&lt;li&gt;Analyzes historical data for trends (Pandas)&lt;/li&gt;
+&lt;li&gt;Generates visual reports (Matplotlib)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Project 2: Log Analysis Pipeline&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;project-2-log-analysis-pipeline&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#project-2-log-analysis-pipeline&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Create an end-to-end log analysis pipeline that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Parses application logs&lt;/li&gt;
+&lt;li&gt;Detects anomalies and patterns&lt;/li&gt;
+&lt;li&gt;Generates daily/weekly reports&lt;/li&gt;
+&lt;li&gt;Visualizes error trends&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Project 3: Capacity Planning Tool&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;project-3-capacity-planning-tool&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#project-3-capacity-planning-tool&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Develop a capacity planning tool that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Collects resource utilization data&lt;/li&gt;
+&lt;li&gt;Predicts future resource needs&lt;/li&gt;
+&lt;li&gt;Identifies optimization opportunities&lt;/li&gt;
+&lt;li&gt;Creates executive dashboards&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Assessment Checklist&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;assessment-checklist&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#assessment-checklist&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;✅ &lt;strong&gt;Python Basics&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Can write functions with error handling&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Understand file I/O operations&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Can work with JSON/YAML configurations&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Able to create reusable modules&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;✅ &lt;strong&gt;NumPy&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Can create and manipulate arrays&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Understand array broadcasting&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Can perform statistical operations&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Able to optimize performance with vectorization&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;✅ &lt;strong&gt;Pandas&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Can load and parse various data formats&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Understand DataFrame operations&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Can perform time series analysis&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Able to aggregate and group data&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;✅ &lt;strong&gt;Matplotlib&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Can create basic plots&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Understand subplot layouts&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Can customize visualizations&lt;/li&gt;
+&lt;li&gt;&lt;input disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; Able to create dashboard-style reports&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Additional Resources&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;additional-resources&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#additional-resources&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;Books&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;books&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#books&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.oreilly.com/library/view/python-for-devops/9781492057680/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Python for DevOps (O&amp;rsquo;Reilly)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://automatetheboringstuff.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Automate the Boring Stuff with Python&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jakevdp.github.io/PythonDataScienceHandbook/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Python Data Science Handbook&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Online Courses&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;online-courses&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#online-courses&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://realpython.com/learning-paths/python-devops/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Real Python - Python for DevOps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.datacamp.com/tracks/data-manipulation-with-python&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;DataCamp - Data Manipulation with Python&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.coursera.org/specializations/python&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Coursera - Python for Everybody&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Documentation&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;documentation&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#documentation&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.python.org/3/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Python Official Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://numpy.org/doc/stable/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;NumPy Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://pandas.pydata.org/docs/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Pandas Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://matplotlib.org/stable/contents.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Matplotlib Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Next Steps&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;next-steps&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#next-steps&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;After completing Week 1, you&amp;rsquo;ll be ready to move on to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Week 2&lt;/strong&gt;: Linear Algebra and Statistics for ML&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Week 3&lt;/strong&gt;: Introduction to Machine Learning&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Week 4&lt;/strong&gt;: Deep Learning Fundamentals&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Remember: The goal is not just to learn Python, but to apply it effectively in DevOps/SRE contexts. Focus on building practical, production-ready solutions!&lt;/em&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

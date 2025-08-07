@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<html lang="en"><head><script src="/learn-ai/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=learn-ai/livereload" data-no-instant defer></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
-  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
-<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
-<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
-<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+  <link rel="icon shortcut" href="/learn-ai/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/learn-ai/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/learn-ai/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="/learn-ai/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/learn-ai/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/learn-ai/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/learn-ai/site.webmanifest" rel="manifest" />
 <title>Development Environment Setup – ML Engineering for DevOps/SRE Professionals</title>
   <meta name="description" content="Development Environment SetupComplete guide to set up your ML engineering development environment.
-System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recommended: 16GB RAM, 200GB SSD, 8 CPU cores GPU (optional): NVIDIA GPU with CUDA support for deep learning Operating System Ubuntu 20.04&#43; / macOS 11&#43; / Windows 11 with WSL2 Docker Desktop installed Kubernetes (minikube or kind for local development) Core Software Installation 1. Python Environment # Install Python 3.9&#43; sudo apt update sudo apt install python3.9 python3.9-venv python3-pip # Install Conda (alternative) wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh bash Miniconda3-latest-Linux-x86_64.sh # Create virtual environment python3.9 -m venv ml-env source ml-env/bin/activate 2. Essential Python Packages # Core ML libraries pip install numpy pandas scikit-learn matplotlib seaborn pip install tensorflow pytorch torchvision pip install xgboost lightgbm # MLOps tools pip install mlflow dvc wandb pip install prefect airflow pip install pytest black flake8 # Serving frameworks pip install fastapi uvicorn gunicorn pip install streamlit gradio 3. Docker Setup # Install Docker curl -fsSL https://get.docker.com -o get-docker.sh sudo sh get-docker.sh # Add user to docker group sudo usermod -aG docker $USER # Install Docker Compose sudo curl -L &#34;https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)&#34; -o /usr/local/bin/docker-compose sudo chmod &#43;x /usr/local/bin/docker-compose 4. Kubernetes Tools # Install kubectl curl -LO &#34;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&#34; sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl # Install minikube for local development curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 sudo install minikube-linux-amd64 /usr/local/bin/minikube # Install Helm curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash IDE Configuration VS Code Extensions { &#34;recommendations&#34;: [ &#34;ms-python.python&#34;, &#34;ms-toolsai.jupyter&#34;, &#34;ms-azuretools.vscode-docker&#34;, &#34;ms-kubernetes-tools.vscode-kubernetes-tools&#34;, &#34;GitHub.copilot&#34;, &#34;ms-vscode-remote.remote-containers&#34; ] } PyCharm Setup Install PyCharm Professional Configure Python interpreter Install plugins: Docker, Kubernetes, Database Tools Set up code style and linting Cloud Platform CLIs AWS # Install AWS CLI curl &#34;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&#34; -o &#34;awscliv2.zip&#34; unzip awscliv2.zip sudo ./aws/install # Configure credentials aws configure Google Cloud # Install gcloud SDK echo &#34;deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main&#34; | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - sudo apt update &amp;&amp; sudo apt install google-cloud-cli Azure # Install Azure CLI curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash az login GPU Setup (Optional) NVIDIA CUDA Installation # Check GPU lspci | grep -i nvidia # Install CUDA Toolkit wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb sudo dpkg -i cuda-keyring_1.0-1_all.deb sudo apt update sudo apt install cuda # Install cuDNN # Download from NVIDIA website and install # Verify installation nvidia-smi nvcc --version PyTorch with CUDA # Install PyTorch with CUDA support pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 Project Structure Template ml-project/ ├── data/ │ ├── raw/ │ ├── processed/ │ └── external/ ├── models/ │ ├── checkpoints/ │ └── production/ ├── notebooks/ │ ├── exploration/ │ └── experiments/ ├── src/ │ ├── data/ │ ├── features/ │ ├── models/ │ └── serving/ ├── tests/ │ ├── unit/ │ └── integration/ ├── configs/ │ ├── training/ │ └── deployment/ ├── docker/ │ ├── training.Dockerfile │ └── serving.Dockerfile ├── kubernetes/ │ ├── training/ │ └── serving/ ├── .github/ │ └── workflows/ ├── requirements.txt ├── setup.py ├── Makefile └── README.md Verification Script Create a script to verify your setup:" /><link rel="canonical" href="http://localhost:1313/docs/setup/" itemprop="url" />
+System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recommended: 16GB RAM, 200GB SSD, 8 CPU cores GPU (optional): NVIDIA GPU with CUDA support for deep learning Operating System Ubuntu 20.04&#43; / macOS 11&#43; / Windows 11 with WSL2 Docker Desktop installed Kubernetes (minikube or kind for local development) Core Software Installation 1. Python Environment # Install Python 3.9&#43; sudo apt update sudo apt install python3.9 python3.9-venv python3-pip # Install Conda (alternative) wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh bash Miniconda3-latest-Linux-x86_64.sh # Create virtual environment python3.9 -m venv ml-env source ml-env/bin/activate 2. Essential Python Packages # Core ML libraries pip install numpy pandas scikit-learn matplotlib seaborn pip install tensorflow pytorch torchvision pip install xgboost lightgbm # MLOps tools pip install mlflow dvc wandb pip install prefect airflow pip install pytest black flake8 # Serving frameworks pip install fastapi uvicorn gunicorn pip install streamlit gradio 3. Docker Setup # Install Docker curl -fsSL https://get.docker.com -o get-docker.sh sudo sh get-docker.sh # Add user to docker group sudo usermod -aG docker $USER # Install Docker Compose sudo curl -L &#34;https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)&#34; -o /usr/local/bin/docker-compose sudo chmod &#43;x /usr/local/bin/docker-compose 4. Kubernetes Tools # Install kubectl curl -LO &#34;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&#34; sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl # Install minikube for local development curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 sudo install minikube-linux-amd64 /usr/local/bin/minikube # Install Helm curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash IDE Configuration VS Code Extensions { &#34;recommendations&#34;: [ &#34;ms-python.python&#34;, &#34;ms-toolsai.jupyter&#34;, &#34;ms-azuretools.vscode-docker&#34;, &#34;ms-kubernetes-tools.vscode-kubernetes-tools&#34;, &#34;GitHub.copilot&#34;, &#34;ms-vscode-remote.remote-containers&#34; ] } PyCharm Setup Install PyCharm Professional Configure Python interpreter Install plugins: Docker, Kubernetes, Database Tools Set up code style and linting Cloud Platform CLIs AWS # Install AWS CLI curl &#34;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&#34; -o &#34;awscliv2.zip&#34; unzip awscliv2.zip sudo ./aws/install # Configure credentials aws configure Google Cloud # Install gcloud SDK echo &#34;deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main&#34; | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - sudo apt update &amp;&amp; sudo apt install google-cloud-cli Azure # Install Azure CLI curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash az login GPU Setup (Optional) NVIDIA CUDA Installation # Check GPU lspci | grep -i nvidia # Install CUDA Toolkit wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb sudo dpkg -i cuda-keyring_1.0-1_all.deb sudo apt update sudo apt install cuda # Install cuDNN # Download from NVIDIA website and install # Verify installation nvidia-smi nvcc --version PyTorch with CUDA # Install PyTorch with CUDA support pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 Project Structure Template ml-project/ ├── data/ │ ├── raw/ │ ├── processed/ │ └── external/ ├── models/ │ ├── checkpoints/ │ └── production/ ├── notebooks/ │ ├── exploration/ │ └── experiments/ ├── src/ │ ├── data/ │ ├── features/ │ ├── models/ │ └── serving/ ├── tests/ │ ├── unit/ │ └── integration/ ├── configs/ │ ├── training/ │ └── deployment/ ├── docker/ │ ├── training.Dockerfile │ └── serving.Dockerfile ├── kubernetes/ │ ├── training/ │ └── serving/ ├── .github/ │ └── workflows/ ├── requirements.txt ├── setup.py ├── Makefile └── README.md Verification Script Create a script to verify your setup:" /><link rel="canonical" href="http://localhost:1313/learn-ai/docs/setup/" itemprop="url" />
 
 <meta property="og:title" content="Development Environment Setup" />
 <meta property="og:description" content="Development Environment SetupComplete guide to set up your ML engineering development environment.
@@ -260,7 +260,7 @@ ml-project/
 Verification Script
     Create a script to verify your setup:" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/docs/setup/" /><meta property="article:section" content="docs" />
+<meta property="og:url" content="http://localhost:1313/learn-ai/docs/setup/" /><meta property="article:section" content="docs" />
 
 
 
@@ -272,9 +272,9 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
   <meta name="twitter:title" content="Development Environment Setup">
   <meta name="twitter:description" content="Development Environment SetupComplete guide to set up your ML engineering development environment.
 System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recommended: 16GB RAM, 200GB SSD, 8 CPU cores GPU (optional): NVIDIA GPU with CUDA support for deep learning Operating System Ubuntu 20.04&#43; / macOS 11&#43; / Windows 11 with WSL2 Docker Desktop installed Kubernetes (minikube or kind for local development) Core Software Installation 1. Python Environment # Install Python 3.9&#43; sudo apt update sudo apt install python3.9 python3.9-venv python3-pip # Install Conda (alternative) wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh bash Miniconda3-latest-Linux-x86_64.sh # Create virtual environment python3.9 -m venv ml-env source ml-env/bin/activate 2. Essential Python Packages # Core ML libraries pip install numpy pandas scikit-learn matplotlib seaborn pip install tensorflow pytorch torchvision pip install xgboost lightgbm # MLOps tools pip install mlflow dvc wandb pip install prefect airflow pip install pytest black flake8 # Serving frameworks pip install fastapi uvicorn gunicorn pip install streamlit gradio 3. Docker Setup # Install Docker curl -fsSL https://get.docker.com -o get-docker.sh sudo sh get-docker.sh # Add user to docker group sudo usermod -aG docker $USER # Install Docker Compose sudo curl -L &#34;https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)&#34; -o /usr/local/bin/docker-compose sudo chmod &#43;x /usr/local/bin/docker-compose 4. Kubernetes Tools # Install kubectl curl -LO &#34;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&#34; sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl # Install minikube for local development curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 sudo install minikube-linux-amd64 /usr/local/bin/minikube # Install Helm curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash IDE Configuration VS Code Extensions { &#34;recommendations&#34;: [ &#34;ms-python.python&#34;, &#34;ms-toolsai.jupyter&#34;, &#34;ms-azuretools.vscode-docker&#34;, &#34;ms-kubernetes-tools.vscode-kubernetes-tools&#34;, &#34;GitHub.copilot&#34;, &#34;ms-vscode-remote.remote-containers&#34; ] } PyCharm Setup Install PyCharm Professional Configure Python interpreter Install plugins: Docker, Kubernetes, Database Tools Set up code style and linting Cloud Platform CLIs AWS # Install AWS CLI curl &#34;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&#34; -o &#34;awscliv2.zip&#34; unzip awscliv2.zip sudo ./aws/install # Configure credentials aws configure Google Cloud # Install gcloud SDK echo &#34;deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main&#34; | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - sudo apt update &amp;&amp; sudo apt install google-cloud-cli Azure # Install Azure CLI curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash az login GPU Setup (Optional) NVIDIA CUDA Installation # Check GPU lspci | grep -i nvidia # Install CUDA Toolkit wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb sudo dpkg -i cuda-keyring_1.0-1_all.deb sudo apt update sudo apt install cuda # Install cuDNN # Download from NVIDIA website and install # Verify installation nvidia-smi nvcc --version PyTorch with CUDA # Install PyTorch with CUDA support pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 Project Structure Template ml-project/ ├── data/ │ ├── raw/ │ ├── processed/ │ └── external/ ├── models/ │ ├── checkpoints/ │ └── production/ ├── notebooks/ │ ├── exploration/ │ └── experiments/ ├── src/ │ ├── data/ │ ├── features/ │ ├── models/ │ └── serving/ ├── tests/ │ ├── unit/ │ └── integration/ ├── configs/ │ ├── training/ │ └── deployment/ ├── docker/ │ ├── training.Dockerfile │ └── serving.Dockerfile ├── kubernetes/ │ ├── training/ │ └── serving/ ├── .github/ │ └── workflows/ ├── requirements.txt ├── setup.py ├── Makefile └── README.md Verification Script Create a script to verify your setup:">
-<link href="/css/compiled/main.css" rel="stylesheet" />
-    <link href="/css/variables.css" rel="stylesheet" />
-    <link href="/css/custom.css" rel="stylesheet" />
+<link href="/learn-ai/css/compiled/main.css" rel="stylesheet" />
+    <link href="/learn-ai/css/variables.css" rel="stylesheet" />
+    <link href="/learn-ai/css/custom.css" rel="stylesheet" />
 
 
   
@@ -310,13 +310,13 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
   ></div>
 
   <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-2 hx:h-16 hx:px-6">
-    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/learn-ai/">
     <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none" title="ML Engineering for DevOps/SRE Professionals">ML Engineering for DevOps/SRE Professionals</span>
 </a>
 
             <a
               title="Syllabus"
-              href="/docs"
+              href="/learn-ai/docs"
               
               class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:font-medium"
             >
@@ -324,7 +324,7 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
             </a>
             <a
               title="Resources"
-              href="/resources"
+              href="/learn-ai/resources"
               
               class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
             >
@@ -332,13 +332,13 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
             </a>
             <a
               title="Projects"
-              href="/projects"
+              href="/learn-ai/projects"
               
               class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-block hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
             >
               <span class="hx:text-center">Projects</span>
             </a>
-          <a class="hx:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/yourusername/ml-engineering-syllabus" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+          <a class="hx:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/thapakzi/learn-ai/edit/main" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
   <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
 </svg>
 <span class="hx:sr-only">GitHub</span>
@@ -382,23 +382,69 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
           <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/docs/"
+    href="/learn-ai/docs/"
     
   >Complete Syllabus
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
     </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/learn-ai/docs/fundamentals/"
+    
+  >Module 1: Fundamentals
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a>
+              <div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/learn-ai/docs/fundamentals/week1/"
+    
+  >Week 1: Python Fundamentals
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a>
+              <div class="hx:ltr:pr-0 hx:overflow-hidden">
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/docs/fundamentals/"
+    href="/learn-ai/docs/fundamentals/week1/python-basics/"
     
-  >Module 1 - Fundamentals
+  >Python Basics for DevOps/SRE
     </a>
               
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/docs/mlops/"
+    href="/learn-ai/docs/fundamentals/week1/numpy-arrays/"
+    
+  >NumPy for Infrastructure Metrics
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/learn-ai/docs/fundamentals/week1/pandas-dataframes/"
+    
+  >Pandas for Log Analysis
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/learn-ai/docs/fundamentals/week1/matplotlib-visualization/"
+    
+  >Matplotlib for Monitoring Dashboards
+    </a>
+              
+            </li></ul>
+      </div>
+            </li></ul>
+      </div>
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/learn-ai/docs/mlops/"
     
   >Module 2 - MLOps Core
     </a>
@@ -406,7 +452,7 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/docs/infrastructure/"
+    href="/learn-ai/docs/infrastructure/"
     
   >Module 3 - Infrastructure &amp; Deployment
     </a>
@@ -414,7 +460,7 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
             </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="/docs/setup/"
+    href="/learn-ai/docs/setup/"
     
   >Development Environment Setup
     </a>
@@ -481,14 +527,14 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/resources/"
+    href="/learn-ai/resources/"
     
   >Resources
     </a></li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/projects/"
+    href="/learn-ai/projects/"
     
   >Projects
     </a></li>
@@ -496,31 +542,77 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
 
     <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
         
-          <li class=""><a
+          <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/docs/fundamentals/"
+    href="/learn-ai/docs/fundamentals/"
     
-  >Module 1 - Fundamentals
-    </a></li>
+  >Module 1: Fundamentals
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/learn-ai/docs/fundamentals/week1/"
+    
+  >Week 1: Python Fundamentals
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a>
+              <div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/learn-ai/docs/fundamentals/week1/python-basics/"
+    
+  >Python Basics for DevOps/SRE
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/learn-ai/docs/fundamentals/week1/numpy-arrays/"
+    
+  >NumPy for Infrastructure Metrics
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/learn-ai/docs/fundamentals/week1/pandas-dataframes/"
+    
+  >Pandas for Log Analysis
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/learn-ai/docs/fundamentals/week1/matplotlib-visualization/"
+    
+  >Matplotlib for Monitoring Dashboards
+    </a>
+              
+            </li></ul>
+      </div>
+            </li></ul>
+      </div></li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/docs/mlops/"
+    href="/learn-ai/docs/mlops/"
     
   >Module 2 - MLOps Core
     </a></li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/docs/infrastructure/"
+    href="/learn-ai/docs/infrastructure/"
     
   >Module 3 - Infrastructure &amp; Deployment
     </a></li>
           <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="/docs/setup/"
+    href="/learn-ai/docs/setup/"
     
   >Development Environment Setup
     </a></li>
@@ -634,7 +726,7 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
         <a class="hx:font-semibold hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#next-steps">Next Steps
         </a>
       </li></ul>
-      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400"><a class="hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="https://github.com/yourusername/ml-engineering-syllabus/edit/main/docs/setup.md" target="_blank" rel="noreferrer">Edit this page on GitHub →</a>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400"><a class="hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50" href="https://github.com/thapakzi/learn-ai/edit/main/docs/setup.md" target="_blank" rel="noreferrer">Edit this page on GitHub →</a>
         <button aria-hidden="true" id="backToTop" onClick="scrollUp();" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
           <span>Scroll to top</span>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
@@ -651,7 +743,7 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
         
   <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
         <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
-          <a href="/docs/">Complete Syllabus</a>
+          <a href="/learn-ai/docs/">Complete Syllabus</a>
         </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">Development Environment Setup</div>
   </div>
 
@@ -1032,14 +1124,14 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
     <a href="#next-steps" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ol>
 <li>Clone the course repository</li>
 <li>Run the verification script</li>
-<li>Complete the <a href="/docs/fundamentals/" >Module 1: Fundamentals</a></li>
+<li>Complete the <a href="/learn-ai/docs/fundamentals/" >Module 1: Fundamentals</a></li>
 <li>Join the community Discord/Slack channel</li>
 </ol>
 
         </div>
         <div class="hx:mt-16"></div>
         <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
-        href="/docs/infrastructure/"
+        href="/learn-ai/docs/infrastructure/"
         title="Module 3 - Infrastructure &amp; Deployment"
         class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
       ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>Module 3 - Infrastructure &amp; Deployment</a></div>
@@ -1056,8 +1148,8 @@ System Requirements Hardware Minimum: 8GB RAM, 50GB storage, 4 CPU cores Recomme
   </a></div></div>
     </div></footer>
     
-    <script defer src="/js/main.js" integrity=""></script>
-<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script>
-        <script defer src="/en.search.js" integrity=""></script>
+    <script defer src="/learn-ai/js/main.js" integrity=""></script>
+<script defer src="/learn-ai/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script>
+        <script defer src="/learn-ai/en.search.js" integrity=""></script>
   </body>
 </html>
